@@ -1,5 +1,6 @@
 package id.ac.del.pam.aplikasiberkala
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -38,6 +39,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontStyle
@@ -50,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import id.ac.del.pam.aplikasiberkala.ui.theme.AplikasiberkalaTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -64,16 +67,15 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, device = Devices.PIXEL_4)
-@Composable
-fun Homepage(){
-    Scaffold (
-        topBar = { DefaultBar() }
-    ) {
-        paddingValues ->
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Preview(showBackground = true, device = Devices.PIXEL_4)
+    @Composable
+    fun Homepage(){
+        Scaffold (
+            topBar = { DefaultBar() }
+        ) {
+                paddingValues ->
             Surface(
                 modifier = Modifier
                     .padding(paddingValues)
@@ -96,40 +98,48 @@ fun Homepage(){
                 }
             }
         }
-}
+    }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun DefaultBar(title : String = "preview"){
-    TopAppBar(
-        title = { Text(title, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
-        navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Filled.Menu, contentDescription = null)
-            }
-        },
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Filled.FavoriteBorder, contentDescription = null)
-            }
-        },
-        modifier = Modifier
-            .clip(RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp))
-            .shadow(10.dp)
-            .statusBarsPadding(),
-        colors = TopAppBarDefaults.largeTopAppBarColors(
-            containerColor = Color.Yellow
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultBar(title : String = "preview"){
+        TopAppBar(
+            title = { Text(title, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
+            navigationIcon = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Filled.Menu, contentDescription = null)
+                }
+            },
+            actions = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Filled.FavoriteBorder, contentDescription = null)
+                }
+            },
+            modifier = Modifier
+                .clip(RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp))
+                .shadow(10.dp)
+                .statusBarsPadding(),
+            colors = TopAppBarDefaults.largeTopAppBarColors(
+                containerColor = Color.Yellow
+            )
         )
-    )
+    }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(showBackground = true)
 fun RowItem(){
+    val currentContext = LocalContext.current
+
     Card(
-        onClick = { /*TODO*/ },
+        onClick = {
+            val openingdetailintent = Intent(currentContext, MelihatBerita::class.java)
+            openingdetailintent.putExtra("Name", "Juan").putExtra("image", R.drawable.placeholder_images)
+            currentContext.startActivity(openingdetailintent)
+        },
         modifier = Modifier
             .size(
                 width = 200.dp, height = 320.dp
@@ -161,3 +171,4 @@ fun RowItem(){
         }
     }
 }
+
